@@ -5,8 +5,8 @@ import numpy as np
 from poap.strategy import EvalRecord
 from pySOT.experimental_design import SymmetricLatinHypercube
 from pySOT.optimization_problems import OptimizationProblem
-from pySOT.strategy import SRBFStrategy
-from pySOT.surrogate import CubicKernel, LinearTail, RBFInterpolant, SurrogateUnitBox
+from pySOT.strategy import SRBFStrategy, DYCORSStrategy
+from pySOT.surrogate import CubicKernel, LinearTail, ConstantTail, RBFInterpolant
 
 from bayesmark.abstract_optimizer import AbstractOptimizer
 from bayesmark.experiment import experiment_main
@@ -56,11 +56,25 @@ class PySOTOptimizer(AbstractOptimizer):
         slhd = SymmetricLatinHypercube(dim=self.opt.dim, num_pts=des_pts)
 
         # Warped RBF interpolant
-        rbf = RBFInterpolant(dim=self.opt.dim, kernel=CubicKernel(), tail=LinearTail(self.opt.dim), eta=1e-4)
-        rbf = SurrogateUnitBox(rbf, lb=self.opt.lb, ub=self.opt.ub)
+        rbf = RBFInterpolant(dim=self.opt.dim,
+                             lb=self.opt.lb, ub=self.opt.ub,
+                             kernel=CubicKernel(),
+                             tail=LinearTail(self.opt.dim),
+                             eta=1e-4)
 
         # Optimization strategy
+        '''
         self.strategy = SRBFStrategy(
+            max_evals=self.max_evals,
+            opt_prob=self.opt, 
+            exp_design=slhd,
+            surrogate=rbf,
+            asynchronous=True,
+            batch_size=1
+            , use_restarts=True,
+        )
+        '''
+        self.strategy = DYCORSStrategy(
             max_evals=self.max_evals,
             opt_prob=self.opt,
             exp_design=slhd,
