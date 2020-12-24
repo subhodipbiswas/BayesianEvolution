@@ -102,7 +102,17 @@ Also, `next_guess` will be a length `n_suggestions` array of dictionaries of gue
 
 ## Terms of use
 
-Coming soon.
+If you use the code of STEADE, please consider citing our paper:
+```
+@misc{biswas2020better,
+      title={Better call Surrogates: A hybrid Evolutionary Algorithm for Hyperparameter optimization}, 
+      author={Subhodip Biswas and Adam D Cobb and Andreea Sistrunk and Naren Ramakrishnan and Brian Jalaian},
+      year={2020},
+      eprint={2012.06453},
+      archivePrefix={arXiv},
+      primaryClass={cs.NE}
+}
+```
 
 ## Contact
 
